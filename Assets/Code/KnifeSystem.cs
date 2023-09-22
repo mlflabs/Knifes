@@ -32,10 +32,16 @@ public class KnifeSystem : MonoBehaviour
         //createKnife();    
     }
 
-    public void buyKnife()
+    public void buyKnife(int price = 2)
     {
         if (knifeLoaded)
             return;
+
+        //do we have that much money
+        if (GameStateSystem.Instance.credits < price)
+            return;
+
+        GameStateSystem.Instance.addCredits(-price);
 
         createKnife();
     }

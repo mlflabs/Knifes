@@ -42,7 +42,7 @@ public class Knife : MonoBehaviour
             rb.excludeLayers = new LayerMask();
 
 
-            Debug.Log("Mouse 0 Pressed");
+            //Debug.Log("Mouse 0 Pressed");
             rb.AddForce(throwForce, ForceMode2D.Impulse);
             rb.gravityScale = 1;
             
@@ -52,6 +52,16 @@ public class Knife : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
+
+        if (collision.collider.tag == "Danger")
+        {
+            //We went out of bounds, failed attempt
+            GameStateSystem.Instance.addCredits(1);
+            Destroy(gameObject);
+            return;
+        }
+
+
         if (!isActive)
             return;
 
@@ -63,12 +73,17 @@ public class Knife : MonoBehaviour
             rb.velocity = new Vector2(0, 0);
             rb.bodyType = RigidbodyType2D.Kinematic;
             transform.SetParent(collision.collider.transform.parent.transform);
+            GameStateSystem.Instance.addScore(1);
         }
-
-        if(collision.collider.tag == "Knife")
+        else if(collision.collider.tag == "Knife")
         {
             Debug.Log("Hit Knife");
         }
+        else
+        {
+            Debug.Log("HIT:: + " + collision.collider.tag);
+        }
+
     }
 }
 

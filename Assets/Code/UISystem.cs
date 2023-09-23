@@ -33,7 +33,7 @@ public class UISystem : MonoBehaviour
 
     private void onCreditChanged(int value)
     {
-        txtCredits.text = "Credits: " + value.ToString();
+        txtCredits.text = "Deaths: " + value.ToString();
     }
 
     private void onScoreChanged(int value)

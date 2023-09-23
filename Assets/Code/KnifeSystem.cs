@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using UnityEngine;
 
 public class KnifeSystem : MonoBehaviour
@@ -24,12 +25,13 @@ public class KnifeSystem : MonoBehaviour
 
     }
 
-    private void throwListener()
+    private async void throwListener()
     {
         Debug.Log("Throw Event");
         currentKnife.eventThrow.RemoveListener(throwListener);
         knifeLoaded = false;
-        //createKnife();    
+        //await Task.Yield();
+        createKnife();    
     }
 
     public void buyKnife(int price = 2)

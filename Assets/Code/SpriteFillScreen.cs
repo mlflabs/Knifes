@@ -9,15 +9,13 @@ public class SpriteFillScreen : MonoBehaviour
     void Start()
     {
         var rightCorner = Camera.main.ScreenToWorldPoint(new Vector3(Screen.width, Screen.height, Camera.main.transform.position.z));
-        var worldSpaceWidth = rightCorner.x * 2;
-        var worldSpaceHeight = rightCorner.y * 2;
+        var worldSpaceWidth = Mathf.Abs(rightCorner.x * 2);
+        var worldSpaceHeight = Mathf.Abs(rightCorner.y * 2);
 
         var spriteSize = GetComponent<SpriteRenderer>().bounds.size;
-
-        var scaleFactorX = worldSpaceWidth / spriteSize.x;
-        var scaleFactorY = worldSpaceHeight / spriteSize.y;
-
-        if(KeepAspectRatio)
+        float scaleFactorX = worldSpaceWidth / spriteSize.x;
+        float scaleFactorY = worldSpaceHeight / spriteSize.y;
+        if (KeepAspectRatio)
         {
             if (scaleFactorX > scaleFactorY)
             {
@@ -28,7 +26,6 @@ public class SpriteFillScreen : MonoBehaviour
                 scaleFactorX = scaleFactorY;
             }
         }
-
         transform.localScale = new Vector3(scaleFactorX, scaleFactorY, 1);
 
     }

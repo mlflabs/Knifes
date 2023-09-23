@@ -12,6 +12,7 @@ public class GameStateSystem : MonoBehaviour
 
     public int score { get; private set; }
     public int credits { get; private set; }
+    
 
 
     public UnityEvent<int> eventScoreChanged = new UnityEvent<int>();
@@ -33,6 +34,10 @@ public class GameStateSystem : MonoBehaviour
 
     private void Update()
     {
+
+
+        //For incremental updates, not using it
+        /*
         currentTime += Time.deltaTime;
 
         if (currentTime > scoreIncrementIntervalInSec)
@@ -40,6 +45,7 @@ public class GameStateSystem : MonoBehaviour
             currentTime -= scoreIncrementIntervalInSec;
             addCredits(scoreIncrementValue);
         }
+        */
     }
 
 

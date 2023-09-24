@@ -25,7 +25,7 @@ public class KnifeSystem : MonoBehaviour
 
     }
 
-    private async void throwListener()
+    private void throwListener()
     {
         Debug.Log("Throw Event");
         currentKnife.eventThrow.RemoveListener(throwListener);

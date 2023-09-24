@@ -8,7 +8,6 @@ public class TargetSystem : MonoBehaviour
     //Public Variables
     public float rotationSpeed = 1.0f;
     public GameObject target;
-    
 
     // Start is called before the first frame update
     void Start()

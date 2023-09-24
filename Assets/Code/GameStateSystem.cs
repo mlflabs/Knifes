@@ -20,7 +20,7 @@ public class GameStateSystem : MonoBehaviour
 
     public static GameStateSystem Instance { get; private set; }
 
-    private float currentTime = 0f;
+    //private float currentTime = 0f;
 
     private void Awake()
     {

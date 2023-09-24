@@ -20,11 +20,14 @@ public class Knife : MonoBehaviour
     private Rigidbody2D rb;
     private BoxCollider2D collider2d;
 
+    private Shaker shaker;
+
 
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
         collider2d = GetComponent<BoxCollider2D>();
+        shaker = GetComponent<Shaker>();
     }
 
 
@@ -50,6 +53,17 @@ public class Knife : MonoBehaviour
         }
     }
 
+    public void DetatchFromTarget(){
+        rb.bodyType = RigidbodyType2D.Dynamic;
+        //transform.SetParent(go.transform);
+    }
+
+    public void AttackToTarget(GameObject go){
+            rb.velocity = new Vector2(0, 0);
+            rb.bodyType = RigidbodyType2D.Kinematic;
+            transform.SetParent(go.transform);
+    }
+
     private void OnCollisionEnter2D(Collision2D collision)
     {
 
@@ -70,14 +84,29 @@ public class Knife : MonoBehaviour
         if(collision.collider.tag == "Target")
         {
             Debug.Log("Hit Log");
-            rb.velocity = new Vector2(0, 0);
-            rb.bodyType = RigidbodyType2D.Kinematic;
-            transform.SetParent(collision.collider.transform.parent.transform);
+            
+            AttackToTarget(collision.collider.transform.parent.gameObject);
             GameStateSystem.Instance.addScore(1);
+
+            //shake target
+            Shaker shaker = collision.collider.transform.parent.gameObject.GetComponent<Shaker>();
+            if (shaker){
+                shaker.Shake();
+            }
         }
         else if(collision.collider.tag == "Knife")
         {
             Debug.Log("Hit Knife");
+            //shake knife and let it fall also
+            var otherGameObject = collision.collider.gameObject;
+            var otherKnife = otherGameObject.GetComponent<Knife>();
+
+
+            otherKnife.DetatchFromTarget();
+            otherKnife.shaker.Shake();
+            //shaker.Shake();
+
+
         }
         else
         {

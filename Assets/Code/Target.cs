@@ -1,7 +1,4 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using Codice.Client.BaseCommands.Merge.Restorer.Finder;
 using DG.Tweening;
 using UnityEngine;
 
@@ -33,7 +30,6 @@ public class Target : MonoBehaviour
 
     public TargetMoveData MoveData;
     private int _currentMoveDataStep = 0;
-    private float _currentTime = 0;
     private MoveStep _moveData;
     void Start()
     {
@@ -74,14 +70,9 @@ public class Target : MonoBehaviour
 
     }
 
-    // Update is called once per frame
     void Update()
     {
-        // _currentTime += Time.deltaTime;
-        // if(_currentTime >= _moveData.TimeInSeconds){
-        //     _currentMoveDataStep = (_currentMoveDataStep+1)%MoveData.Length;
-        //     _moveData = MoveData[_currentMoveDataStep];
-        // }
+
 
     }
 }

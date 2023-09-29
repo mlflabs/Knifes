@@ -40,10 +40,10 @@ public class KnifeSystem : MonoBehaviour
             return;
 
         //do we have that much money
-        if (GameStateSystem.Instance.credits < price)
-            return;
+        //if (LevelStateSystem.Instance.credits < price)
+        //    return;
 
-        GameStateSystem.Instance.addCredits(-price);
+        //LevelStateSystem.Instance.addCredits(-price);
 
         createKnife();
     }

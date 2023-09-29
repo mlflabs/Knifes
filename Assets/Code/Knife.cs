@@ -55,6 +55,7 @@ public class Knife : MonoBehaviour
 
     public void DetatchFromTarget(){
         rb.bodyType = RigidbodyType2D.Dynamic;
+        transform.SetParent(null, false);
         //transform.SetParent(go.transform);
     }
 
@@ -70,7 +71,7 @@ public class Knife : MonoBehaviour
         if (collision.collider.tag == "Danger")
         {
             //We went out of bounds, failed attempt
-            GameStateSystem.Instance.addCredits(1);
+            //LevelStateSystem.Instance.AddCredits(1);
             Destroy(gameObject);
             return;
         }
@@ -86,7 +87,9 @@ public class Knife : MonoBehaviour
             Debug.Log("Hit Log");
             
             AttackToTarget(collision.collider.transform.parent.gameObject);
-            GameStateSystem.Instance.addScore(1);
+            LevelStateSystem.Instance.AddScore(1);
+
+            LevelStateSystem.Instance.UseKnife();
 
             //shake target
             Shaker shaker = collision.collider.transform.parent.gameObject.GetComponent<Shaker>();
@@ -106,7 +109,7 @@ public class Knife : MonoBehaviour
             otherKnife.shaker.Shake();
             //shaker.Shake();
 
-
+            LevelStateSystem.Instance.ThrowFailed();
         }
         else
         {

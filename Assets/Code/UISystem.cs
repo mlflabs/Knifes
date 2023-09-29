@@ -9,7 +9,8 @@ public class UISystem : MonoBehaviour
 {
 
     public TextMeshProUGUI txtScore;
-    public TextMeshProUGUI txtCredits;
+    public TextMeshProUGUI txtLevel;
+    public TextMeshProUGUI txtTime;
 
     //TODO: have the buy buttons enable disable based on price, maybe a fillup effect
 
@@ -27,13 +28,16 @@ public class UISystem : MonoBehaviour
 
     public void Start()
     {
-        GameStateSystem.Instance.eventCreditChanged.AddListener(onCreditChanged);
-        GameStateSystem.Instance.eventScoreChanged.AddListener(onScoreChanged);
+        LevelStateSystem.Instance.eventBonusTimeChanged.AddListener(onTimeChanged);
+        LevelStateSystem.Instance.eventScoreChanged.AddListener(onScoreChanged);
+
+        txtLevel.text = "Level: " + GameManager.Instance.Data.Level.ToString();
     }
 
-    private void onCreditChanged(int value)
+
+    private void onTimeChanged(float value)
     {
-        txtCredits.text = "Deaths: " + value.ToString();
+        txtTime.text = "Bonus Time: " + value.ToString();
     }
 
     private void onScoreChanged(int value)

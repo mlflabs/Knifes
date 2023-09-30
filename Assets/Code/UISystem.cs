@@ -1,3 +1,4 @@
+using DG.Tweening;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -8,12 +9,18 @@ using UnityEngine;
 public class UISystem : MonoBehaviour
 {
 
+    [SerializeField] private Color _AddScoreCollor = Color.white;
+
+
     public TextMeshProUGUI txtScore;
     public TextMeshProUGUI txtLevel;
     public TextMeshProUGUI txtTime;
 
-    //TODO: have the buy buttons enable disable based on price, maybe a fillup effect
+    [SerializeField] private GameObject _itemsPannel;
+    [SerializeField] private GameObject _appleIcon;
 
+    //TODO: have the buy buttons enable disable based on price, maybe a fillup effect
+    private Color _originalScoreTextColor;
 
     public static UISystem Instance { get; private set; }
 
@@ -32,6 +39,7 @@ public class UISystem : MonoBehaviour
         LevelStateSystem.Instance.eventScoreChanged.AddListener(onScoreChanged);
 
         txtLevel.text = "Level: " + GameManager.Instance.Data.Level.ToString();
+        _originalScoreTextColor = txtScore.color;
     }
 
 
@@ -40,8 +48,36 @@ public class UISystem : MonoBehaviour
         txtTime.text = "Bonus Time: " + value.ToString();
     }
 
+    private Tween _scoreTweenText;
+    private Tween _scoreTweenShake;
+    //private Tween _scoreTweenColor;
+    private int _currentScoreValue = 0;
+    
     private void onScoreChanged(int value)
     {
-        txtScore.text = "Score: " + value.ToString();
+        txtScore.color = _AddScoreCollor;
+        if (_scoreTweenText is not null && _scoreTweenText.active)
+        {
+            _scoreTweenText.Kill();
+            _scoreTweenShake.Kill();
+            //_scoreTweenColor.Kill();
+        }
+        var duration = (value > _currentScoreValue + 9) ? .8f : 0.3f;
+
+        _scoreTweenText = DOTween.To(() => _currentScoreValue, x =>
+        {
+            _currentScoreValue = x;
+            txtScore.text = "Score: " + x;
+        }, value, duration);
+
+        _scoreTweenShake = txtScore.transform.DOShakePosition(duration,2f)
+            .OnComplete(() => txtScore.color = _originalScoreTextColor);
+        
+    }
+
+    public void AddApple()
+    {
+        var gb = Instantiate(_appleIcon, _itemsPannel.transform);
+        gb.transform.DOShakePosition(1f);
     }
 }

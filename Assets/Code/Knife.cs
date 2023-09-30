@@ -10,6 +10,8 @@ public class Knife : MonoBehaviour
     [SerializeField]
     private Vector2 throwForce;
 
+    [SerializeField]
+    private int _scoreAmount = 1;
 
     //Events
     public UnityEvent eventThrow = new UnityEvent();
@@ -59,7 +61,7 @@ public class Knife : MonoBehaviour
         //transform.SetParent(go.transform);
     }
 
-    public void AttackToTarget(GameObject go){
+    public void AttachToTarget(GameObject go){
             rb.velocity = new Vector2(0, 0);
             rb.bodyType = RigidbodyType2D.Kinematic;
             transform.SetParent(go.transform);
@@ -86,16 +88,19 @@ public class Knife : MonoBehaviour
         {
             Debug.Log("Hit Log");
             
-            AttackToTarget(collision.collider.transform.parent.gameObject);
-            LevelStateSystem.Instance.AddScore(1);
-
-            LevelStateSystem.Instance.UseKnife();
-
-            //shake target
+            AttachToTarget(collision.collider.transform.parent.gameObject);
+            
             Shaker shaker = collision.collider.transform.parent.gameObject.GetComponent<Shaker>();
             if (shaker){
                 shaker.Shake();
             }
+
+            Target target = collision.collider.transform.parent.gameObject.GetComponent<Target>();
+            target.AddKnife(transform);
+
+            LevelStateSystem.Instance.AddScore(_scoreAmount);
+
+            LevelStateSystem.Instance.UseKnife();
         }
         else if(collision.collider.tag == "Knife")
         {

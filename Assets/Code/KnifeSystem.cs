@@ -25,12 +25,13 @@ public class KnifeSystem : MonoBehaviour
 
     }
 
-    private void throwListener()
+    private async void throwListener()
     {
         Debug.Log("Throw Event");
         currentKnife.eventThrow.RemoveListener(throwListener);
         knifeLoaded = false;
         //await Task.Yield();
+        await Task.Delay(100);
         createKnife();    
     }
 

@@ -41,6 +41,7 @@ public class Target : MonoBehaviour
 
 
     [SerializeField] private GameObject parentPieces;
+    [SerializeField] private GameObject parentItems;
     private List<Transform> _targetKnifes = new List<Transform>();
 
     void Start()
@@ -106,7 +107,14 @@ public class Target : MonoBehaviour
             
         }
 
-        foreach(Transform t in _targetKnifes)
+        foreach (Transform t in parentItems.transform)
+        {
+            t.gameObject.SetActive(true);
+            t.DOJump(t.position + new Vector3(t.position.x * _jumpXMultiplier, -10f, 1), _jumpPower, 1, _jumpDuration);
+
+        }
+
+        foreach (Transform t in _targetKnifes)
         {
             t.DOJump(t.position + new Vector3(t.position.x * _jumpXMultiplier, -10f, 1), _jumpPower, 1, _jumpDuration);
         }

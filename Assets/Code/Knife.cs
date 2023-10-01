@@ -41,6 +41,8 @@ public class Knife : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (LevelStateSystem.Instance.LevelFinished) return;
+
         if(Input.GetMouseButtonDown(0) && isActive)
         {
             rb.constraints = RigidbodyConstraints2D.None;

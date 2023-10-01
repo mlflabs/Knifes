@@ -2,6 +2,7 @@ using DG.Tweening;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -11,16 +12,21 @@ public class UISystem : MonoBehaviour
 
     [SerializeField] private Color _AddScoreCollor = Color.white;
 
+   
 
     public TextMeshProUGUI txtScore;
     public TextMeshProUGUI txtLevel;
     public TextMeshProUGUI txtTime;
 
+    [SerializeField] private GameObject _UICanvas;
     [SerializeField] private GameObject _itemsPannel;
-    [SerializeField] private GameObject _appleIcon;
+    [SerializeField] private Apple _appleIcon;
+
+    [SerializeField] private SummaryPanel _uiSummary;
 
     //TODO: have the buy buttons enable disable based on price, maybe a fillup effect
     private Color _originalScoreTextColor;
+    private List<Apple> _items = new List<Apple>();
 
     public static UISystem Instance { get; private set; }
 
@@ -39,11 +45,12 @@ public class UISystem : MonoBehaviour
         LevelStateSystem.Instance.eventScoreChanged.AddListener(onScoreChanged);
 
         txtLevel.text = "Level: " + GameManager.Instance.Data.Level.ToString();
+        txtScore.text = "Score: " + GameManager.Instance.Data.Score.ToString();
         _originalScoreTextColor = txtScore.color;
     }
 
 
-    private void onTimeChanged(float value)
+    private void onTimeChanged(int value)
     {
         txtTime.text = "Bonus Time: " + value.ToString();
     }
@@ -77,7 +84,20 @@ public class UISystem : MonoBehaviour
 
     public void AddApple()
     {
+        print("UI, adding apple");
         var gb = Instantiate(_appleIcon, _itemsPannel.transform);
         gb.transform.DOShakePosition(1f);
+        _items.Add(gb);
+    }
+
+    public Apple[] GetItems()
+    {
+        return _items.ToArray();
+    }
+
+    public void PlayLevelClearedSummary()
+    {
+        var summary = Instantiate(_uiSummary, _UICanvas.transform);
+        summary.PlaySummary(UISystem.Instance.txtScore, UISystem.Instance.GetItems(), LevelStateSystem.Instance.BonusTime);
     }
 }

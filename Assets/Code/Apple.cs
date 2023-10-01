@@ -6,10 +6,14 @@ using UnityEngine;
 public class Apple : MonoBehaviour
 {
     [SerializeField]
-    private int _scoreAmount = 1;
+    public int ScoreAmount = 10;
+
+    private bool _appleHit;
 
     private void OnTriggerEnter2D(Collider2D collider)
     {
+
+        if (_appleHit) return;
 
         if (collider.tag == "Knife")
         {
@@ -18,8 +22,10 @@ public class Apple : MonoBehaviour
             print("TopRight:: " + topRight);
             transform.DOMove(topRight, .2f).OnComplete(()=>
             {
-                LevelStateSystem.Instance.AddApple(_scoreAmount);
+                LevelStateSystem.Instance.AddApple();
             });
+
+            _appleHit = true;
         }
         else
         {

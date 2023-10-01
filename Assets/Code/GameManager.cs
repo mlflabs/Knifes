@@ -9,8 +9,8 @@ using UnityEngine.Events;
 [Serializable]
 public class GameData
 {
-    public int Level;
-    public int Score;
+    public int Level = 1;
+    public int Score = 0;
 }
 
 
@@ -25,7 +25,6 @@ public class GameManager : MonoBehaviour
     public GameState State { get; private set; }
 
 
-
     public enum GameState
     {
         Loading,
@@ -33,7 +32,6 @@ public class GameManager : MonoBehaviour
         StartGame,
         Level,
         NextLevel,
-        LevelResultSuccess,
         LevelResultFailed,
     }
 
@@ -75,12 +73,8 @@ public class GameManager : MonoBehaviour
 
             case GameState.NextLevel:
                 Data.Level += 1;
+                Data.Score = LevelStateSystem.Instance.score;
                 SceneService.Instance.LoadScene("Level");
-                break;
-
-            case GameState.LevelResultSuccess:
-                
-                SceneService.Instance.LoadScene("Success");
                 break;
 
             case GameState.LevelResultFailed:
@@ -111,6 +105,22 @@ public class GameManager : MonoBehaviour
     public void BackToMainMenu()
     {
         UpdateGameState(GameState.MainMenu);
+    }
+
+    public void LevelCleared()
+    {
+        UISystem.Instance.PlayLevelClearedSummary();
+
+    }
+
+    public void setScore(int score)
+    {
+        Data.Score = score;
+    }
+
+    public void setLevel(int level)
+    {
+        Data.Level = level;
     }
 
 }

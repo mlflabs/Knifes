@@ -5,6 +5,7 @@ using System.Collections;
 using System;
 using System.Threading.Tasks;
 using System.Collections.Generic;
+using DG.Tweening;
 
 public class LevelStateSystem : MonoBehaviour
 {
@@ -25,18 +26,20 @@ public class LevelStateSystem : MonoBehaviour
     [SerializeField] private Sprite _knifeFull;
     [SerializeField] private Sprite _knifeEmpty;
 
+    public int BonusTime = 20;
+
     private Image[] _knifeIcons;
     private int _applesHit = 0;
     private int _usedKnifes;
     private List<Target> targers = new List<Target>();
 
     public UnityEvent<int> eventScoreChanged = new UnityEvent<int>();
-    public UnityEvent<float> eventBonusTimeChanged = new UnityEvent<float>();  
+    public UnityEvent<int> eventBonusTimeChanged = new UnityEvent<int>();  
 
     public static LevelStateSystem Instance { get; private set; }
     public bool HasKnifes { get => _usedKnifes < _numberOfAvailableKnifes;}
 
-    private bool _levelFinished = false;
+    public bool LevelFinished = false;
 
     //private float currentTime = 0f;
 
@@ -57,7 +60,22 @@ public class LevelStateSystem : MonoBehaviour
 
         prepareIcons();
         _usedKnifes = 0;
-        
+        score = GameManager.Instance.Data.Score;
+        setupBonusTimeCounter();
+    }
+
+
+    private async void setupBonusTimeCounter()
+    {
+        for(int i = 1; i <= BonusTime; i++)
+        {
+            await Task.Delay(1000);
+
+            if (LevelFinished) return;
+            print("Bonus Time:: " + BonusTime);
+            BonusTime--;
+            eventBonusTimeChanged?.Invoke(BonusTime);
+        }
     }
 
     public void RegisterTarget(Target target)
@@ -92,18 +110,18 @@ public class LevelStateSystem : MonoBehaviour
 
     public async void PlaySuccessAnimation()
     {
-        _levelFinished = true;
+        LevelFinished = true;
         foreach (var target in targers)
         {
             target.PlayDestroyTargetAnimation();
         }
         await Task.Delay(500);
-        GameManager.Instance.UpdateGameState(GameManager.GameState.LevelResultSuccess);
+        GameManager.Instance.LevelCleared();
     }
 
     public void ThrowFailed()
     {
-        if(_levelFinished) return;
+        if(LevelFinished) return;
         GameManager.Instance.UpdateGameState(GameManager.GameState.LevelResultFailed);
     }
 
@@ -113,9 +131,9 @@ public class LevelStateSystem : MonoBehaviour
         eventScoreChanged.Invoke(score);
     }
 
-    public void AddApple(int score)
+    public void AddApple()
     {
-        _applesHit++;
+        //_applesHit++;
         //AddScore(score);
         UISystem.Instance.AddApple();
     }

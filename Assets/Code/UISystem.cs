@@ -12,7 +12,7 @@ public class UISystem : MonoBehaviour
 
     [SerializeField] private Color _AddScoreCollor = Color.white;
 
-   
+
 
     public TextMeshProUGUI txtScore;
     public TextMeshProUGUI txtLevel;
@@ -59,9 +59,16 @@ public class UISystem : MonoBehaviour
     private Tween _scoreTweenShake;
     //private Tween _scoreTweenColor;
     private int _currentScoreValue = 0;
-    
-    private void onScoreChanged(int value)
+
+    private void onScoreChanged(int value, bool animate)
     {
+        if (!animate)
+        {
+            txtScore.text = "Score: " + value.ToString();
+            _currentScoreValue = value;
+            return;
+        }
+
         txtScore.color = _AddScoreCollor;
         if (_scoreTweenText is not null && _scoreTweenText.active)
         {
@@ -77,9 +84,9 @@ public class UISystem : MonoBehaviour
             txtScore.text = "Score: " + x;
         }, value, duration);
 
-        _scoreTweenShake = txtScore.transform.DOShakePosition(duration,2f)
+        _scoreTweenShake = txtScore.transform.DOShakePosition(duration, 2f)
             .OnComplete(() => txtScore.color = _originalScoreTextColor);
-        
+
     }
 
     public void AddApple()
@@ -98,6 +105,6 @@ public class UISystem : MonoBehaviour
     public void PlayLevelClearedSummary()
     {
         var summary = Instantiate(_uiSummary, _UICanvas.transform);
-        summary.PlaySummary(UISystem.Instance.txtScore, UISystem.Instance.GetItems(), LevelStateSystem.Instance.BonusTime);
+        summary.PlaySummary(LevelStateSystem.Instance.score, UISystem.Instance.GetItems(), LevelStateSystem.Instance.BonusTime);
     }
 }

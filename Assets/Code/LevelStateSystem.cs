@@ -33,11 +33,11 @@ public class LevelStateSystem : MonoBehaviour
     private int _usedKnifes;
     private List<Target> targers = new List<Target>();
 
-    public UnityEvent<int> eventScoreChanged = new UnityEvent<int>();
-    public UnityEvent<int> eventBonusTimeChanged = new UnityEvent<int>();  
+    public UnityEvent<int, bool> eventScoreChanged = new UnityEvent<int, bool>();
+    public UnityEvent<int> eventBonusTimeChanged = new UnityEvent<int>();
 
     public static LevelStateSystem Instance { get; private set; }
-    public bool HasKnifes { get => _usedKnifes < _numberOfAvailableKnifes;}
+    public bool HasKnifes { get => _usedKnifes < _numberOfAvailableKnifes; }
 
     public bool LevelFinished = false;
 
@@ -55,19 +55,26 @@ public class LevelStateSystem : MonoBehaviour
 
     }
 
+    private void OnEnable()
+    {
+        print("OnEnablw------------------------");
+    }
+
     private void Start()
     {
 
+        print("OnStart =============================");
         prepareIcons();
         _usedKnifes = 0;
         score = GameManager.Instance.Data.Score;
+        eventScoreChanged?.Invoke(score, false);
         setupBonusTimeCounter();
     }
 
 
     private async void setupBonusTimeCounter()
     {
-        for(int i = 1; i <= BonusTime; i++)
+        for (int i = 1; i <= BonusTime; i++)
         {
             await Task.Delay(1000);
 
@@ -98,14 +105,14 @@ public class LevelStateSystem : MonoBehaviour
 
     public void UseKnife()
     {
-        if(_knifeIcons.Length > _usedKnifes)
+        if (_knifeIcons.Length > _usedKnifes)
             _knifeIcons[_usedKnifes].sprite = _knifeEmpty;
         _usedKnifes++;
 
         if (HasKnifes) return;
 
         PlaySuccessAnimation();
-        
+
     }
 
     public async void PlaySuccessAnimation()
@@ -121,14 +128,14 @@ public class LevelStateSystem : MonoBehaviour
 
     public void ThrowFailed()
     {
-        if(LevelFinished) return;
+        if (LevelFinished) return;
         GameManager.Instance.UpdateGameState(GameManager.GameState.LevelResultFailed);
     }
 
     public void AddScore(int value)
     {
         score += value;
-        eventScoreChanged.Invoke(score);
+        eventScoreChanged.Invoke(score, true);
     }
 
     public void AddApple()
@@ -140,9 +147,9 @@ public class LevelStateSystem : MonoBehaviour
 
     //public void AddCredits(int value)
     //{
-        //credits += value;
-        //eventCreditChanged.Invoke(credits);
+    //credits += value;
+    //eventCreditChanged.Invoke(credits);
     //}
 
-    
+
 }

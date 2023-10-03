@@ -128,7 +128,8 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      knifesbackground_0: 7115113587250495407
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

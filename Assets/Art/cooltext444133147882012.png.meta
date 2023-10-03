@@ -128,7 +128,8 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      cooltext444133147882012_0: -1132860704158409291
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

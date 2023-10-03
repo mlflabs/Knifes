@@ -21,7 +21,7 @@ public class GameManager : MonoBehaviour
 
     public GameData Data { get; private set; }
 
-    
+
     public GameState State { get; private set; }
 
 
@@ -73,7 +73,7 @@ public class GameManager : MonoBehaviour
 
             case GameState.NextLevel:
                 Data.Level += 1;
-                Data.Score = LevelStateSystem.Instance.score;
+                //Data.Score = LevelStateSystem.Instance.score;
                 SceneService.Instance.LoadScene("Level");
                 break;
 
@@ -95,7 +95,7 @@ public class GameManager : MonoBehaviour
         UpdateGameState(GameState.StartGame);
     }
 
- 
+
 
     public void NextLevel()
     {

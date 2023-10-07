@@ -163,7 +163,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e011663a5b80b241b42cc013ecedfde, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _uiSummary: {fileID: 2234127729172986524, guid: 369d96b39d919ea4187c613b4fbb2d44, type: 3}
+  SceneData:
+  - scenes:
+    - Level_1
+  Test: 
 --- !u!4 &252665073
 Transform:
   m_ObjectHideFlags: 0
@@ -871,7 +874,7 @@ MonoBehaviour:
           m_FloatArgument: 0
           m_StringArgument: Level
           m_BoolArgument: 0
-        m_CallState: 2
+        m_CallState: 0
       - m_Target: {fileID: 252665072}
         m_TargetAssemblyTypeName: GameManager, NewAssembly
         m_MethodName: StartGame

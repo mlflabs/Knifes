@@ -35,6 +35,7 @@ public class LevelStateSystem : MonoBehaviour
 
     public UnityEvent<int, bool> eventScoreChanged = new UnityEvent<int, bool>();
     public UnityEvent<int> eventBonusTimeChanged = new UnityEvent<int>();
+    public UnityEvent eventLevelFinished = new UnityEvent();
 
     public static LevelStateSystem Instance { get; private set; }
     public bool HasKnifes { get => _usedKnifes < _numberOfAvailableKnifes; }
@@ -118,6 +119,7 @@ public class LevelStateSystem : MonoBehaviour
     public async void PlaySuccessAnimation()
     {
         LevelFinished = true;
+        eventLevelFinished?.Invoke();
         foreach (var target in targers)
         {
             target.PlayDestroyTargetAnimation();

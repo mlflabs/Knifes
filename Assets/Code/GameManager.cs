@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.SceneManagement;
 
 
 [Serializable]
@@ -13,16 +14,26 @@ public class GameData
     public int Score = 0;
 }
 
+[Serializable]
+public class LevelSceneData
+{
+    //# array id is multiplierd by 10, so 0 = 0-9, 1 = 10-19
+    public String[] scenes;
+}
+
 
 public class GameManager : MonoBehaviour
 {
 
     public static GameManager Instance { get; private set; }
 
+
     public GameData Data { get; private set; }
 
-
+    public LevelSceneData[] SceneData;
     public GameState State { get; private set; }
+
+    public string Test;
 
 
     public enum GameState
@@ -68,13 +79,16 @@ public class GameManager : MonoBehaviour
             case GameState.StartGame:
                 State = GameState.Level;
                 Data.Level = 1;
-                SceneService.Instance.LoadScene("Level");
+                SceneService.Instance.LoadScene(SceneData[0].scenes[0]);
                 break;
 
             case GameState.NextLevel:
                 Data.Level += 1;
                 //Data.Score = LevelStateSystem.Instance.score;
-                SceneService.Instance.LoadScene("Level");
+                int id = (int)(Data.Level * 0.1);
+                var sceneData = SceneData[id];
+                var rndSceneId = UnityEngine.Random.Range(0, sceneData.scenes.Length - 1);
+                SceneService.Instance.LoadScene(sceneData.scenes[rndSceneId]);
                 break;
 
             case GameState.LevelResultFailed:
@@ -122,5 +136,7 @@ public class GameManager : MonoBehaviour
     {
         Data.Level = level;
     }
+
+    public int getLevel() => Data.Level;
 
 }

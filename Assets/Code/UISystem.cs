@@ -20,6 +20,8 @@ public class UISystem : MonoBehaviour
 
     [SerializeField] private GameObject _UICanvas;
     [SerializeField] private GameObject _itemsPannel;
+    [SerializeField] private GameObject _topMenu;
+
     [SerializeField] private Apple _appleIcon;
 
     [SerializeField] private SummaryPanel _uiSummary;
@@ -104,7 +106,8 @@ public class UISystem : MonoBehaviour
 
     public void PlayLevelClearedSummary()
     {
+        _topMenu.transform.DOMoveY(_topMenu.transform.position.y + 200, 1);
         var summary = Instantiate(_uiSummary, _UICanvas.transform);
-        summary.PlaySummary(LevelStateSystem.Instance.score, UISystem.Instance.GetItems(), LevelStateSystem.Instance.BonusTime);
+        summary.PlaySummary(GameManager.Instance.Data.Level, LevelStateSystem.Instance.score, UISystem.Instance.GetItems(), LevelStateSystem.Instance.BonusTime);
     }
 }

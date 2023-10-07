@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Codice.Client.BaseCommands.Merge.Restorer.Finder;
 using DG.Tweening;
 using UnityEngine;
 
@@ -17,6 +18,7 @@ public class TargetMoveData
 [Serializable]
 public class MoveStep
 {
+    public float LevelDifficultyMultiplier = 1f;
     public float TimeInSeconds;
     public float RotateDestinationInDegrees;
     public float RotateSpeed;
@@ -28,7 +30,6 @@ public class MoveStep
 
 public class Target : MonoBehaviour
 {
-
     public TargetMoveData MoveData;
     private int _currentMoveDataStep = 0;
     private MoveStep _moveData;
@@ -51,7 +52,7 @@ public class Target : MonoBehaviour
         LevelStateSystem.Instance.RegisterTarget(this);
         prepareObjects();
 
-        
+
     }
 
     private void prepareObjects()
@@ -73,14 +74,15 @@ public class Target : MonoBehaviour
 
         if (_moveData.MoveDestination != Vector3.zero)
         {
-            _animationSequence.Join(transform.DOMove(_moveData.MoveDestination, _moveData.TimeInSeconds)
+            _animationSequence.Join(transform.DOMove(_moveData.MoveDestination,
+                _moveData.TimeInSeconds - (GameManager.Instance.Data.Level * _moveData.LevelDifficultyMultiplier))
                 .SetRelative());
         }
 
         if (_moveData.RotateDestinationInDegrees != 0f)
         {
             _animationSequence.Join(transform.DORotate(new Vector3(0, 0, _moveData.RotateDestinationInDegrees),
-                _moveData.TimeInSeconds,
+                _moveData.TimeInSeconds - (GameManager.Instance.Data.Level * _moveData.LevelDifficultyMultiplier),
                 RotateMode.FastBeyond360)
             //.SetLoops(_moveData.RotateMultiplier, LoopType.Incremental)
             .SetRelative());
@@ -100,26 +102,32 @@ public class Target : MonoBehaviour
     public void PlayDestroyTargetAnimation()
     {
         _animationSequence?.Kill();
-        foreach(Transform t in parentPieces.transform)
+        foreach (Transform t in parentPieces.transform)
         {
             t.gameObject.SetActive(true);
-            t.DOJump(t.position + new Vector3(t.position.x * _jumpXMultiplier, -10f, 1), _jumpPower, 1, _jumpDuration);
-            
+            t.DOJump(t.position + new Vector3(t.position.x * _jumpXMultiplier, -10f, 1), _jumpPower, 1, _jumpDuration)
+                .OnComplete(() => Destroy(t.gameObject));
+
         }
 
         foreach (Transform t in parentItems.transform)
         {
             t.gameObject.SetActive(true);
-            t.DOJump(t.position + new Vector3(t.position.x * _jumpXMultiplier, -10f, 1), _jumpPower, 1, _jumpDuration);
+            t.DOJump(t.position + new Vector3(t.position.x * _jumpXMultiplier, -10f, 1), _jumpPower, 1, _jumpDuration)
+                .OnComplete(() => Destroy(t.gameObject));
 
         }
 
         foreach (Transform t in _targetKnifes)
         {
-            t.DOJump(t.position + new Vector3(t.position.x * _jumpXMultiplier, -10f, 1), _jumpPower, 1, _jumpDuration);
+            t.DOJump(t.position + new Vector3(t.position.x * _jumpXMultiplier, -10f, 1), _jumpPower, 1, _jumpDuration)
+                .OnComplete(() => Destroy(t.gameObject));
         }
 
         _targetSprite.SetActive(false);
+
+
+        //just destroy all the objectys
     }
 
     public void AddKnife(Transform knife)

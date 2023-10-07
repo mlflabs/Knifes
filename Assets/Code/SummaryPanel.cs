@@ -17,12 +17,12 @@ public class SummaryPanel : MonoBehaviour
     [SerializeField] private GameObject _itemsParent;
     [SerializeField] private GameObject _btnNext;
 
-    public async void PlaySummary(int score, Apple[] items, int bonusTime)
+    public async void PlaySummary(int level, int score, Apple[] items, int bonusTime)
     {
 
         _txtTime.text = bonusTime.ToString();
         _txtScore.text = score.ToString();
-
+        _txtLevel.text = "Level: " + level.ToString();
 
         for (int i = 1; i <= bonusTime; i++)
         {
@@ -44,7 +44,7 @@ public class SummaryPanel : MonoBehaviour
             await Task.Delay(500);
         }
 
-        await Task.Delay(1000);
+        await Task.Delay(200);
         GameManager.Instance.setScore(score);
         _btnNext.SetActive(true);
 

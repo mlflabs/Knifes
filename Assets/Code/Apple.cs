@@ -9,6 +9,7 @@ public class Apple : MonoBehaviour
     public int ScoreAmount = 10;
 
     private bool _appleHit;
+    [SerializeField] private AudioClip _audioHit;
 
     private void OnTriggerEnter2D(Collider2D collider)
     {
@@ -17,6 +18,7 @@ public class Apple : MonoBehaviour
 
         if (collider.tag == "Knife")
         {
+            AudioManager.Instance.PlaySound(_audioHit);
             Vector2 screenTopRight = new Vector2(Camera.main.pixelWidth, Camera.main.pixelHeight);
             var topRight = Camera.main.ScreenToWorldPoint(screenTopRight);
             print("TopRight:: " + topRight);

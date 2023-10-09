@@ -128,10 +128,11 @@ public class LevelStateSystem : MonoBehaviour
         GameManager.Instance.LevelCleared();
     }
 
-    public void ThrowFailed()
+    public void PlayFailedAnimation()
     {
-        if (LevelFinished) return;
-        GameManager.Instance.UpdateGameState(GameManager.GameState.LevelResultFailed);
+        LevelFinished = true;
+        eventLevelFinished?.Invoke();
+        GameManager.Instance.LevelFailed();
     }
 
     public void AddScore(int value)

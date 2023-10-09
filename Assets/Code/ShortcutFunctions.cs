@@ -29,6 +29,6 @@ public class ShortcutFunctions : MonoBehaviour
 
     public void BackToMain()
     {
-
+        GameManager.Instance.BackToMainMenu();
     }
 }

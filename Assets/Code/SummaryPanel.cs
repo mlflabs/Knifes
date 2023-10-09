@@ -17,9 +17,13 @@ public class SummaryPanel : MonoBehaviour
     [SerializeField] private GameObject _itemsParent;
     [SerializeField] private GameObject _btnNext;
 
+    [SerializeField] private AudioClip _audioSuccess, _audioCoin;
+
     public async void PlaySummary(int level, int score, Apple[] items, int bonusTime)
     {
 
+        AudioManager.Instance.PlaySound(_audioSuccess);
+        
         _txtTime.text = bonusTime.ToString();
         _txtScore.text = score.ToString();
         _txtLevel.text = "Level: " + level.ToString();
@@ -31,6 +35,7 @@ public class SummaryPanel : MonoBehaviour
             _txtScore.text = score.ToString();
             //LevelStateSystem.Instance.AddScore(_scorePerSecond);
             //LevelStateSystem.Instance.eventBonusTimeChanged?.Invoke(bonusTime - i);
+            AudioManager.Instance.PlaySound(_audioCoin);
             await Task.Delay(100);
         }
 
@@ -41,6 +46,7 @@ public class SummaryPanel : MonoBehaviour
             score += a.ScoreAmount;
             _txtScore.text = score.ToString();
             //LevelStateSystem.Instance.AddScore(a.ScoreAmount);
+            AudioManager.Instance.PlaySound(_audioCoin);
             await Task.Delay(500);
         }
 

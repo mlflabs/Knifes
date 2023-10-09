@@ -13,6 +13,8 @@ public class Knife : MonoBehaviour
     [SerializeField]
     private int _scoreAmount = 1;
 
+    [SerializeField] private AudioClip _audioHitTarget,  _audioHitKnife, _audioThrow;
+
     //Events
     public UnityEvent eventThrow = new UnityEvent();
 
@@ -52,7 +54,9 @@ public class Knife : MonoBehaviour
             //Debug.Log("Mouse 0 Pressed");
             rb.AddForce(throwForce, ForceMode2D.Impulse);
             rb.gravityScale = 1;
-            
+
+            AudioManager.Instance.PlaySound(_audioThrow);
+
             eventThrow.Invoke();
         }
     }
@@ -90,6 +94,8 @@ public class Knife : MonoBehaviour
         {
             Debug.Log("Hit Log");
             
+            AudioManager.Instance.PlaySound(_audioHitTarget);
+
             AttachToTarget(collision.collider.transform.parent.gameObject);
             
             Shaker shaker = collision.collider.transform.parent.gameObject.GetComponent<Shaker>();
@@ -107,6 +113,8 @@ public class Knife : MonoBehaviour
         else if(collision.collider.tag == "Knife")
         {
             Debug.Log("Hit Knife");
+
+            AudioManager.Instance.PlaySound(_audioHitKnife);
             //shake knife and let it fall also
             var otherGameObject = collision.collider.gameObject;
             var otherKnife = otherGameObject.GetComponent<Knife>();
@@ -116,11 +124,11 @@ public class Knife : MonoBehaviour
             otherKnife.shaker.Shake();
             //shaker.Shake();
 
-            LevelStateSystem.Instance.ThrowFailed();
+            LevelStateSystem.Instance.PlayFailedAnimation();
         }
         else
         {
-            Debug.Log("HIT:: + " + collision.collider.tag);
+            Debug.Log("HIT.......:: + " + collision.collider.tag);
         }
 
     }

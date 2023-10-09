@@ -100,6 +100,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ScoreAmount: 50
+  _audioHit: {fileID: 8300000, guid: 4ff454dcb163e544bbfef92924a1b7fe, type: 3}
 --- !u!58 &557962252874119483
 CircleCollider2D:
   m_ObjectHideFlags: 0

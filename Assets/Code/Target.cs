@@ -34,6 +34,8 @@ public class Target : MonoBehaviour
     private int _currentMoveDataStep = 0;
     private MoveStep _moveData;
 
+    [SerializeField] private AudioClip _audioBreak;
+
     [SerializeField] private GameObject _targetSprite;
 
     [SerializeField] private float _jumpPower = 1f;
@@ -101,6 +103,7 @@ public class Target : MonoBehaviour
 
     public void PlayDestroyTargetAnimation()
     {
+        AudioManager.Instance.PlaySound(_audioBreak);
         _animationSequence?.Kill();
         foreach (Transform t in parentPieces.transform)
         {

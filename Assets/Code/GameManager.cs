@@ -73,6 +73,7 @@ public class GameManager : MonoBehaviour
             case GameState.Loading:
                 break;
             case GameState.MainMenu:
+                print("Going to start menu");
                 SceneService.Instance.LoadScene("StartMenu");
                 break;
 
@@ -125,6 +126,11 @@ public class GameManager : MonoBehaviour
     {
         UISystem.Instance.PlayLevelClearedSummary();
 
+    }
+
+    public void LevelFailed()
+    {
+        UISystem.Instance.PlayLevelFinishedSummary();
     }
 
     public void setScore(int score)

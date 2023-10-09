@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 7084527868536035224}
   - component: {fileID: 1568563664103769032}
   - component: {fileID: 631653203966591178}
+  - component: {fileID: 1569635600768073728}
   m_Layer: 0
   m_Name: Knife
   m_TagString: Knife
@@ -175,6 +176,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   throwForce: {x: 0, y: 20}
   _scoreAmount: 1
+  _audioHitTarget: {fileID: 8300000, guid: a2951193359c3494081f02df5a22ffb1, type: 3}
+  _audioHitApple: {fileID: 8300000, guid: 4ff454dcb163e544bbfef92924a1b7fe, type: 3}
+  _audioHitKnife: {fileID: 8300000, guid: 2afe6da19fd96754c8e7d50e2c74a226, type: 3}
+  _audioThrow: {fileID: 8300000, guid: 4526ab797b261524e9719f4b3aec1758, type: 3}
   eventThrow:
     m_PersistentCalls:
       m_Calls: []
@@ -194,3 +199,16 @@ MonoBehaviour:
   shake_decay: 0.002
   shake_intensity: 0.3
   shake_time: 0.1
+--- !u!114 &1569635600768073728
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9181178750160275721}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 68d4d7862c0725d4d995df8ce991a2e6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  clip: {fileID: 8300000, guid: 4526ab797b261524e9719f4b3aec1758, type: 3}

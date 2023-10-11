@@ -32,7 +32,7 @@ public class KnifeSystem : MonoBehaviour
         knifeLoaded = false;
         //await Task.Yield();
         await Task.Delay(100);
-        createKnife();    
+        createKnife();
     }
 
     public void buyKnife(int price = 2)

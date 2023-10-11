@@ -2509,6 +2509,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   LevelFinished: 0
+  LevelFailed: 0
 --- !u!1001 &1688442590
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3122,6 +3123,18 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 1062416261}
+    - target: {fileID: 1636721230037196180, guid: 09306791dcd41a243a1ca490d8540217, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1636721230037196180, guid: 09306791dcd41a243a1ca490d8540217, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 250
+      objectReference: {fileID: 0}
+    - target: {fileID: 1636721230037196180, guid: 09306791dcd41a243a1ca490d8540217, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 155
+      objectReference: {fileID: 0}
     - target: {fileID: 1651304324291578611, guid: 09306791dcd41a243a1ca490d8540217, type: 3}
       propertyPath: _failedPanel
       value: 

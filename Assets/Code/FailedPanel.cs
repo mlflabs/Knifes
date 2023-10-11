@@ -21,14 +21,15 @@ public class FailedPanel : MonoBehaviour
     {
 
         AudioManager.Instance.PlaySound(_audioFailed);
-        
+
         _txtScore.text = score.ToString();
         _txtLevel.text = "Level: " + level.ToString();
 
-        
+
 
         await Task.Delay(200);
         GameManager.Instance.setScore(score);
+        UnityGameServices.AddScoreToAnonymouse(score);
         _btnNext.SetActive(true);
 
     }

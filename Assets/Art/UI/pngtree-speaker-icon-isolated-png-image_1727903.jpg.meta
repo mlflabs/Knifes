@@ -128,7 +128,8 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      pngtree-speaker-icon-isolated-png-image_1727903_0: 7182669872777182735
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

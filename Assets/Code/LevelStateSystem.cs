@@ -41,6 +41,7 @@ public class LevelStateSystem : MonoBehaviour
     public bool HasKnifes { get => _usedKnifes < _numberOfAvailableKnifes; }
 
     public bool LevelFinished = false;
+    public bool LevelFailed = false;
 
     //private float currentTime = 0f;
 
@@ -104,13 +105,16 @@ public class LevelStateSystem : MonoBehaviour
         }
     }
 
-    public void UseKnife()
+    public async void UseKnife()
     {
         if (_knifeIcons.Length > _usedKnifes)
             _knifeIcons[_usedKnifes].sprite = _knifeEmpty;
         _usedKnifes++;
 
         if (HasKnifes) return;
+        await Task.Delay(200);
+
+        if (LevelFailed) return; //prevent overlap
 
         PlaySuccessAnimation();
 
@@ -118,6 +122,9 @@ public class LevelStateSystem : MonoBehaviour
 
     public async void PlaySuccessAnimation()
     {
+        //Bug, if we throw too fast, the failed result will be overwritten by succcess
+        if (LevelFailed) return;
+
         LevelFinished = true;
         eventLevelFinished?.Invoke();
         foreach (var target in targers)
@@ -130,7 +137,10 @@ public class LevelStateSystem : MonoBehaviour
 
     public void PlayFailedAnimation()
     {
+        if (LevelFailed) return;//prevent overlap, 2 failed panels
+
         LevelFinished = true;
+        LevelFailed = true;
         eventLevelFinished?.Invoke();
         GameManager.Instance.LevelFailed();
     }

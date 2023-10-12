@@ -3,10 +3,10 @@ using Unity.Services.Core;
 using Unity.Services.Authentication;
 using Unity.Services.Leaderboards;
 using System;
-using System.Threading.Tasks;
 using Unity.Services.Leaderboards.Models;
 using System.Collections.Generic;
 using Unity.Services.Analytics;
+using Cysharp.Threading.Tasks;
 
 public class UnityGameServices
 {
@@ -43,11 +43,11 @@ public class UnityGameServices
 
     }
 
-    public static async Task<String> AnonymousAuthenticateAndGetName()
+    public static async UniTask<String> AnonymousAuthenticateAndGetName()
     {
         return await Authenticate();
     }
-    public static async Task<String> UpdateName(String name)
+    public static async UniTask<String> UpdateName(String name)
     {
         try
         {
@@ -61,7 +61,7 @@ public class UnityGameServices
 
         return AuthenticationService.Instance.PlayerName;
     }
-    public static async Task<String> Authenticate()
+    public static async UniTask<String> Authenticate()
     {
         try
         {
@@ -94,14 +94,14 @@ public class UnityGameServices
         return "Guest";
     }
 
-    public static async Task AddScore(double score)
+    public static async UniTask AddScore(double score)
     {
         var playerEntry = await LeaderboardsService.Instance
             .AddPlayerScoreAsync(leaderboardId, score);
     }
 
 
-    public static async Task<LeaderboardEntry> GetPlayerScore()
+    public static async UniTask<LeaderboardEntry> GetPlayerScore()
     {
 
         try
@@ -124,7 +124,7 @@ public class UnityGameServices
             new GetScoresOptions { Offset = 25, Limit = 50 }
         );
     }
-    public static async Task<LeaderboardScoresPage> GetScores(int offset = 0, int limit = 3)
+    public static async UniTask<LeaderboardScoresPage> GetScores(int offset = 0, int limit = 3)
     {
         try
         {

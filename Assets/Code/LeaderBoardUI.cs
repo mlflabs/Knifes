@@ -1,10 +1,7 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
-using Unity.Services.Core;
-using System.Threading.Tasks;
 using System;
+using Cysharp.Threading.Tasks;
 
 [Serializable]
 public class PlayerScoreUI
@@ -35,7 +32,7 @@ public class LeaderBoardUI : MonoBehaviour
 
     }
 
-    private async Task updateTopScores()
+    private async UniTask updateTopScores()
     {
         var scores = await UnityGameServices.GetScores();
 
@@ -61,7 +58,7 @@ public class LeaderBoardUI : MonoBehaviour
         }
     }
 
-    private async Task updatePlayerInfo()
+    private async UniTask updatePlayerInfo()
     {
         var entry = await UnityGameServices.GetPlayerScore();
         if (entry is null)
@@ -70,7 +67,7 @@ public class LeaderBoardUI : MonoBehaviour
             _txtPlayerScore.text = "0";
             return;
         }
-        //_txtPlayerName.text = entry.PlayerName;
+        _txtPlayerName.text = "Auto Generated: " + entry.PlayerName;
         _txtPlayerScore.text = entry.Score.ToString() + " (" + (entry.Rank + 1).ToString() + ")";
 
         GameManager.Instance.setTopScore((int)entry.Score);

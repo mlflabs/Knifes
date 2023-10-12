@@ -1,6 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -17,6 +14,7 @@ public class Knife : MonoBehaviour
 
     //Events
     public UnityEvent eventThrow = new UnityEvent();
+    public UnityEvent eventHit = new UnityEvent();
 
     //Private
     [SerializeField]
@@ -32,12 +30,6 @@ public class Knife : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         collider2d = GetComponent<BoxCollider2D>();
         shaker = GetComponent<Shaker>();
-    }
-
-
-    private void Start()
-    {
-        
     }
 
     // Update is called once per frame
@@ -89,6 +81,8 @@ public class Knife : MonoBehaviour
             return;
 
         isActive = false;
+        eventHit?.Invoke();
+
 
         if(collision.collider.tag == "Target")
         {

@@ -1,10 +1,7 @@
 using DG.Tweening;
-using System;
-using System.Collections;
+using UnityEngine.UI;
 using System.Collections.Generic;
-using System.Runtime.CompilerServices;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class UISystem : MonoBehaviour
@@ -22,10 +19,14 @@ public class UISystem : MonoBehaviour
     [SerializeField] private GameObject _itemsPannel;
     [SerializeField] private GameObject _topMenu;
 
+
     [SerializeField] private Apple _appleIcon;
 
     [SerializeField] private SummaryPanel _uiSummary;
     [SerializeField] private FailedPanel _failedPanel;
+
+
+
 
     //TODO: have the buy buttons enable disable based on price, maybe a fillup effect
     private Color _originalScoreTextColor;
@@ -117,5 +118,7 @@ public class UISystem : MonoBehaviour
         _topMenu.transform.DOMoveY(_topMenu.transform.position.y + 200, 1);
         var summary = Instantiate(_failedPanel, _UICanvas.transform);
         summary.PlayFailedSummary(GameManager.Instance.Data.Level, LevelStateSystem.Instance.score);
-        }
+    }
+
+
 }

@@ -1,11 +1,7 @@
-using UnityEngine.UI;
 using UnityEngine;
 using UnityEngine.Events;
-using System.Collections;
-using System;
-using System.Threading.Tasks;
 using System.Collections.Generic;
-using DG.Tweening;
+using Cysharp.Threading.Tasks;
 
 public class LevelStateSystem : MonoBehaviour
 {
@@ -21,20 +17,19 @@ public class LevelStateSystem : MonoBehaviour
 
 
     [SerializeField] private int _numberOfAvailableKnifes;
-    [SerializeField] private GameObject _knifePannel;
-    [SerializeField] private Image _knifeIcon;
-    [SerializeField] private Sprite _knifeFull;
-    [SerializeField] private Sprite _knifeEmpty;
+    public int TotalKnifes { get => _numberOfAvailableKnifes;  }
+    private int _usedKnifes;
 
     public int BonusTime = 20;
 
-    private Image[] _knifeIcons;
-    private int _usedKnifes;
+    
+    
     private List<Target> targers = new List<Target>();
 
     public UnityEvent<int, bool> eventScoreChanged = new UnityEvent<int, bool>();
     public UnityEvent<int> eventBonusTimeChanged = new UnityEvent<int>();
     public UnityEvent eventLevelFinished = new UnityEvent();
+    public UnityEvent eventKnifeThrown = new UnityEvent();
 
     public static LevelStateSystem Instance { get; private set; }
     public bool HasKnifes { get => _usedKnifes < _numberOfAvailableKnifes; }
@@ -56,16 +51,8 @@ public class LevelStateSystem : MonoBehaviour
 
     }
 
-    private void OnEnable()
-    {
-        print("OnEnablw------------------------");
-    }
-
     private void Start()
     {
-
-        print("OnStart =============================");
-        prepareIcons();
         _usedKnifes = 0;
         score = GameManager.Instance.Data.Score;
         eventScoreChanged?.Invoke(score, false);
@@ -77,10 +64,9 @@ public class LevelStateSystem : MonoBehaviour
     {
         for (int i = 1; i <= BonusTime; i++)
         {
-            await Task.Delay(1000);
+            await UniTask.Delay(1000);
 
             if (LevelFinished) return;
-            print("Bonus Time:: " + BonusTime);
             BonusTime--;
             eventBonusTimeChanged?.Invoke(BonusTime);
         }
@@ -91,30 +77,16 @@ public class LevelStateSystem : MonoBehaviour
         targers.Add(target);
     }
 
-    private void prepareIcons()
-    {
-        _knifeIcons = new Image[_numberOfAvailableKnifes];
-        for (var i = 0; i < _numberOfAvailableKnifes; i++)
-        {
-            var icon = Instantiate(_knifeIcon);
-            icon.sprite = _knifeFull;
-            icon.transform.SetParent(_knifePannel.transform);
-            _knifeIcons[i] = icon;
-
-        }
-    }
 
     public async void UseKnife()
     {
-        if (_knifeIcons.Length > _usedKnifes)
-            _knifeIcons[_usedKnifes].sprite = _knifeEmpty;
         _usedKnifes++;
+        eventKnifeThrown?.Invoke();
 
         if (HasKnifes) return;
-        await Task.Delay(200);
+        await UniTask.Delay(200);
 
-        if (LevelFailed) return; //prevent overlap
-
+        if (LevelFailed) return;
         PlaySuccessAnimation();
 
     }
@@ -130,7 +102,7 @@ public class LevelStateSystem : MonoBehaviour
         {
             target.PlayDestroyTargetAnimation();
         }
-        await Task.Delay(500);
+        await UniTask.Delay(500);
         GameManager.Instance.LevelCleared();
     }
 

@@ -1,7 +1,4 @@
-using DG.Tweening;
-using System.Collections;
-using System.Collections.Generic;
-using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 using TMPro;
 using UnityEngine;
 
@@ -36,7 +33,7 @@ public class SummaryPanel : MonoBehaviour
             //LevelStateSystem.Instance.AddScore(_scorePerSecond);
             //LevelStateSystem.Instance.eventBonusTimeChanged?.Invoke(bonusTime - i);
             AudioManager.Instance.PlaySound(_audioCoin);
-            await Task.Delay(100);
+            await UniTask.Delay(100);
         }
 
         //add icons
@@ -47,10 +44,10 @@ public class SummaryPanel : MonoBehaviour
             _txtScore.text = score.ToString();
             //LevelStateSystem.Instance.AddScore(a.ScoreAmount);
             AudioManager.Instance.PlaySound(_audioCoin);
-            await Task.Delay(500);
+            await UniTask.Delay(500);
         }
 
-        await Task.Delay(200);
+        await UniTask.Delay(200);
         GameManager.Instance.setScore(score);
         _btnNext.SetActive(true);
 

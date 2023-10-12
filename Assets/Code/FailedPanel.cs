@@ -1,7 +1,4 @@
-using DG.Tweening;
-using System.Collections;
-using System.Collections.Generic;
-using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 using TMPro;
 using UnityEngine;
 
@@ -24,15 +21,15 @@ public class FailedPanel : MonoBehaviour
 
         if (score > GameManager.Instance.getTopScore())
         {
-            await Task.Delay(200);
+            await UniTask.Delay(200);
             /// _txtTopScore.transform.localScale = new Vector3(5f, 5f, 1);
             _txtTopScore.gameObject.SetActive(true);
             // _txtTopScore.transform.DOScale(new Vector3(1f, 1f, 1f), 0.5f);
-            await Task.Delay(300);
+            await UniTask.Delay(300);
         }
 
         UnityGameServices.SendLevelClearedEvent(level, score);
-        await Task.Delay(200);
+        await UniTask.Delay(200);
         GameManager.Instance.setScore(score);
         UnityGameServices.AddScoreToAnonymouse(score);
         _btnNext.SetActive(true);

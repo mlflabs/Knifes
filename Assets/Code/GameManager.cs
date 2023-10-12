@@ -1,11 +1,7 @@
 using DG.Tweening;
 using System;
-using System.Collections;
-using System.Collections.Generic;
+using Unity.Services.Core;
 using UnityEngine;
-using UnityEngine.Events;
-using UnityEngine.SceneManagement;
-
 
 [Serializable]
 public class GameData
@@ -53,7 +49,13 @@ public class GameManager : MonoBehaviour
         if (Instance != null && Instance != this)
             Destroy(this);
         else
+        {
             Instance = this;
+            UnityServices.InitializeAsync();
+        }
+
+
+
 
     }
 

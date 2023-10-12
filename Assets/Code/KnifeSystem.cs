@@ -1,7 +1,5 @@
+using Cysharp.Threading.Tasks;
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using UnityEngine;
 
 public class KnifeSystem : MonoBehaviour
@@ -19,6 +17,23 @@ public class KnifeSystem : MonoBehaviour
     private bool knifeLoaded;
 
 
+    public static KnifeSystem Instance { get; private set; }
+
+
+    private void Awake()
+    {
+        if (Instance != null && Instance != this)
+            Destroy(this);
+        else
+        {
+            Instance = this;
+        }
+
+
+    }
+
+
+
     void Start()
     {
         createKnife();
@@ -29,25 +44,9 @@ public class KnifeSystem : MonoBehaviour
     {
         Debug.Log("Throw Event");
         currentKnife.eventThrow.RemoveListener(throwListener);
-        knifeLoaded = false;
-        //await Task.Yield();
-        await Task.Delay(100);
-        createKnife();
+        knifeLoaded = false;       
     }
 
-    public void buyKnife(int price = 2)
-    {
-        if (knifeLoaded)
-            return;
-
-        //do we have that much money
-        //if (LevelStateSystem.Instance.credits < price)
-        //    return;
-
-        //LevelStateSystem.Instance.addCredits(-price);
-
-        createKnife();
-    }
 
     private void createKnife()
     {
@@ -56,7 +55,16 @@ public class KnifeSystem : MonoBehaviour
 
         currentKnife = gb.GetComponent<Knife>();
         currentKnife.eventThrow.AddListener(throwListener);
+        currentKnife.eventHit.AddListener(hitListener);
 
         knifeLoaded = true;
+        print("Knife Build");
+    }
+
+    private void hitListener()
+    {
+        currentKnife.eventHit.RemoveListener(hitListener);
+        if (LevelStateSystem.Instance.HasKnifes)
+            createKnife();
     }
 }

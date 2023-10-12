@@ -99,7 +99,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e2d386d590c0f5343a398efde39ede12, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ScoreAmount: 50
+  ScoreAmount: 10
   _audioHit: {fileID: 8300000, guid: 4ff454dcb163e544bbfef92924a1b7fe, type: 3}
 --- !u!58 &557962252874119483
 CircleCollider2D:

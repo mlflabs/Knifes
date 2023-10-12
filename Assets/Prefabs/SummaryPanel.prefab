@@ -735,7 +735,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 41cee1b7ad7b8b548ae0d6e9887b8e02, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _scorePerSecond: 10
+  _scorePerSecond: 2
   _txtScore: {fileID: 4523530734746330594}
   _txtTime: {fileID: 4283255517614537976}
   _txtLevel: {fileID: 3723917957069210230}

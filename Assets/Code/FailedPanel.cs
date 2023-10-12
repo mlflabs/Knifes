@@ -31,6 +31,7 @@ public class FailedPanel : MonoBehaviour
             await Task.Delay(300);
         }
 
+        UnityGameServices.SendLevelClearedEvent(level, score);
         await Task.Delay(200);
         GameManager.Instance.setScore(score);
         UnityGameServices.AddScoreToAnonymouse(score);

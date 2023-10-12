@@ -2,13 +2,11 @@ using UnityEngine;
 using Unity.Services.Core;
 using Unity.Services.Authentication;
 using Unity.Services.Leaderboards;
-using Newtonsoft.Json;
 using System;
 using System.Threading.Tasks;
-using Codice.CM.Client.Differences.Merge;
-using PlasticPipe.PlasticProtocol.Messages;
-using NUnit.Framework;
 using Unity.Services.Leaderboards.Models;
+using System.Collections.Generic;
+using Unity.Services.Analytics;
 
 public class UnityGameServices
 {
@@ -69,13 +67,16 @@ public class UnityGameServices
         {
             if (UnityServices.State == ServicesInitializationState.Uninitialized)
                 await UnityServices.InitializeAsync();
-            await AuthenticationService.Instance.SignInAnonymouslyAsync();
+            if (!AuthenticationService.Instance.IsSignedIn)
+                await AuthenticationService.Instance.SignInAnonymouslyAsync();
             Debug.Log("Sign in anonymously succeeded!");
 
             // Shows how to get the playerID
             Debug.Log($"PlayerID: {AuthenticationService.Instance.PlayerId}");
             Debug.Log($"PlayerName: {AuthenticationService.Instance.PlayerName}");
             return AuthenticationService.Instance.PlayerName;
+
+            //TODO:: save id.....
 
         }
         catch (AuthenticationException ex)
@@ -97,7 +98,6 @@ public class UnityGameServices
     {
         var playerEntry = await LeaderboardsService.Instance
             .AddPlayerScoreAsync(leaderboardId, score);
-        Debug.Log(JsonConvert.SerializeObject(playerEntry));
     }
 
 
@@ -123,7 +123,6 @@ public class UnityGameServices
             leaderboardId,
             new GetScoresOptions { Offset = 25, Limit = 50 }
         );
-        Debug.Log(JsonConvert.SerializeObject(scoresResponse));
     }
     public static async Task<LeaderboardScoresPage> GetScores(int offset = 0, int limit = 3)
     {
@@ -133,7 +132,6 @@ public class UnityGameServices
                 leaderboardId,
                 new GetScoresOptions { Offset = offset, Limit = limit }
             );
-            Debug.Log(JsonConvert.SerializeObject(res));
             return res;
         }
         catch (Exception ex)
@@ -141,5 +139,17 @@ public class UnityGameServices
             Debug.LogException(ex);
         }
         return null;
+    }
+
+
+    public static void SendLevelClearedEvent(int level, int score)
+    {
+        Dictionary<string, object> parameters = new Dictionary<string, object>()
+        {
+            { "userScore", score },
+            { "userLevel", level },
+        };
+
+        AnalyticsService.Instance.CustomData("LevelFinished", parameters);
     }
 }

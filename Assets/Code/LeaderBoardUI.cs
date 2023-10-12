@@ -20,8 +20,7 @@ public class LeaderBoardUI : MonoBehaviour
 
     [SerializeField] private PlayerScoreUI[] _topScores;
 
-    [SerializeField] private Color _highlighColor;
-
+    [SerializeField] private Color32 _highlighColor;
 
     async void Start()
     {
@@ -40,15 +39,22 @@ public class LeaderBoardUI : MonoBehaviour
     {
         var scores = await UnityGameServices.GetScores();
 
-        for (var i = 0; i < scores.Results.Count || i < _topScores.Length; i++)
+        var total = (scores.Results.Count < _topScores.Length) ? scores.Results.Count : _topScores.Length;
+        for (var i = 0; i < total; i++)
         {
+
             var player = scores.Results[i];
             var x = _topScores[i];
-            x.TxtName.text = player.PlayerName;
+
             x.TxtScore.text = player.Score + " (" + (player.Rank + 1).ToString() + ")";
-            if (x.TxtName.text == _txtPlayerName.text)
+            if (player.PlayerName == GameManager.Instance.getName())
             {
+                x.TxtName.text = "** You:";
                 x.TxtName.color = _highlighColor;
+            }
+            else
+            {
+                x.TxtName.text = player.PlayerName + ":";
             }
 
 
@@ -64,7 +70,10 @@ public class LeaderBoardUI : MonoBehaviour
             _txtPlayerScore.text = "0";
             return;
         }
-        _txtPlayerName.text = entry.PlayerName;
+        //_txtPlayerName.text = entry.PlayerName;
         _txtPlayerScore.text = entry.Score.ToString() + " (" + (entry.Rank + 1).ToString() + ")";
+
+        GameManager.Instance.setTopScore((int)entry.Score);
+        GameManager.Instance.setName(entry.PlayerName);
     }
 }

@@ -29,7 +29,6 @@ public class LevelStateSystem : MonoBehaviour
     public int BonusTime = 20;
 
     private Image[] _knifeIcons;
-    private int _applesHit = 0;
     private int _usedKnifes;
     private List<Target> targers = new List<Target>();
 

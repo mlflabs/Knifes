@@ -12,6 +12,8 @@ public class GameData
 {
     public int Level = 1;
     public int Score = 0;
+    public int TopScore = 0;
+    public String name;
 }
 
 [Serializable]
@@ -143,6 +145,21 @@ public class GameManager : MonoBehaviour
         Data.Level = level;
     }
 
+    public void setName(String name)
+    {
+        Data.name = name;
+    }
+
+    public void setTopScore(int value)
+    {
+        Data.TopScore = value;
+    }
+
     public int getLevel() => Data.Level;
+
+    public int getTopScore() => Data.TopScore;
+    public String getName() => Data.name;
+
+
 
 }

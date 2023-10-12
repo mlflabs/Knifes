@@ -133,6 +133,7 @@ public class UnityGameServices
                 leaderboardId,
                 new GetScoresOptions { Offset = offset, Limit = limit }
             );
+            Debug.Log(JsonConvert.SerializeObject(res));
             return res;
         }
         catch (Exception ex)

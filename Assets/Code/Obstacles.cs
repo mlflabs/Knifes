@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Obstacles : MonoBehaviour
 {
-    [SerializeField] private int _obstaclesPerLevel;
+    [SerializeField] private float _obstaclesPerLevel;
     [SerializeField] private GameObject _obstaclesParent;
     [SerializeField] private float _jumpXMultiplier = 1f;
     [SerializeField] private float _jumpPower = 1f;
@@ -28,7 +28,7 @@ public class Obstacles : MonoBehaviour
 
     void ActivateObstacles()
     {
-        var obstacleCount = GameManager.Instance.getLevel() * _obstaclesPerLevel;
+        int obstacleCount = (int) (GameManager.Instance.getLevel() * _obstaclesPerLevel);
         var childCount = _obstaclesParent.transform.childCount;
         var childArray = new List<int>();
         for (var i = 0; i < childCount - 1; i++)

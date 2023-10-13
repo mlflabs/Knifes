@@ -8,6 +8,7 @@ using UnityEngine;
 public class TargetMoveData
 {
     public Vector2 StartPosition;
+    
     public MoveStep[] Steps;
 
 }
@@ -17,6 +18,7 @@ public class TargetMoveData
 [Serializable]
 public class MoveStep
 {
+    public float minTime = 0.2f;
     public float LevelDifficultyMultiplier = 1f;
     public float TimeInSeconds;
     public float RotateDestinationInDegrees;
@@ -31,6 +33,7 @@ public class Target : MonoBehaviour
 {
     public TargetMoveData MoveData;
     private int _currentMoveDataStep = 0;
+
     private MoveStep _moveData;
 
     [SerializeField] private AudioClip _audioBreak;
@@ -70,23 +73,22 @@ public class Target : MonoBehaviour
     {
         _moveData = MoveData.Steps[_currentMoveDataStep];
 
+        var time = _moveData.TimeInSeconds - (GameManager.Instance.Data.Level * _moveData.LevelDifficultyMultiplier);
+        time = (time < _moveData.minTime) ? _moveData.minTime : time;
 
         _animationSequence = DOTween.Sequence();
 
         if (_moveData.MoveDestination != Vector3.zero)
         {
-            _animationSequence.Join(transform.DOMove(_moveData.MoveDestination,
-                _moveData.TimeInSeconds - (GameManager.Instance.Data.Level * _moveData.LevelDifficultyMultiplier))
-                .SetRelative());
+            
+            _animationSequence.Join(transform.DOMove(_moveData.MoveDestination,time).SetRelative());
         }
 
         if (_moveData.RotateDestinationInDegrees != 0f)
         {
-            _animationSequence.Join(transform.DORotate(new Vector3(0, 0, _moveData.RotateDestinationInDegrees),
-                _moveData.TimeInSeconds - (GameManager.Instance.Data.Level * _moveData.LevelDifficultyMultiplier),
+            _animationSequence.Join(transform.DORotate(new Vector3(0, 0, _moveData.RotateDestinationInDegrees), time,
                 RotateMode.FastBeyond360)
-            //.SetLoops(_moveData.RotateMultiplier, LoopType.Incremental)
-            .SetRelative());
+                .SetRelative());
         }
 
         _animationSequence.OnComplete(() =>

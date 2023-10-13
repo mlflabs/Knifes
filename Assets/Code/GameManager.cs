@@ -90,7 +90,7 @@ public class GameManager : MonoBehaviour
             case GameState.NextLevel:
                 Data.Level += 1;
                 //Data.Score = LevelStateSystem.Instance.score;
-                int id = (int)(Data.Level * 0.1);
+                int id = 0; //(int)(Data.Level * 0.1);
                 var sceneData = SceneData[id];
                 var rndSceneId = UnityEngine.Random.Range(0, sceneData.scenes.Length - 1);
                 SceneService.Instance.LoadScene(sceneData.scenes[rndSceneId]);

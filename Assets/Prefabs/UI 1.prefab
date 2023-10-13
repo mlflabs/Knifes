@@ -1162,7 +1162,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Bonus Time: 21.0'
+  m_text: 'Bonus Time: '
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 98aa9d2e4f6b4344eb0d90f03a7a7d10, type: 2}
   m_sharedMaterial: {fileID: -4317660174531295798, guid: 98aa9d2e4f6b4344eb0d90f03a7a7d10, type: 2}
